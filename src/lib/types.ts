@@ -38,7 +38,7 @@ export interface UserBadge {
 
 export interface UserActivity {
   id: string;
-  type: 'topic_completed' | 'quiz_taken' | 'badge_earned' | 'account_created';
+  type: 'topic_completed' | 'quiz_taken' | 'badge_earned' | 'account_created' | 'streak_updated';
   title: string;
   date: string; // ISO date string
   details?: string; // e.g., "Score: 80%" or "Earned 'Budgeting Pro'"
@@ -46,7 +46,6 @@ export interface UserActivity {
 
 export interface UserProgress {
   completedTopicIds: string[]; // Array of topic IDs
-  // quizScores: Record<string, { score: number; totalQuestions: number; dateTaken: string }>; // topicId -> score details
   quizAttempts: Array<{
     quizId: string; // Corresponds to topicId for simplicity
     topicTitle: string;
@@ -67,4 +66,6 @@ export interface UserProfile {
   badges: UserBadge[];
   activity: UserActivity[];
   progress: UserProgress;
+  currentStreak?: number;
+  longestStreak?: number;
 }

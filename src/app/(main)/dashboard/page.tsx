@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, ListChecks, Target, TrendingUp, Activity, Award } from 'lucide-react';
+import { CheckCircle, ListChecks, Target, TrendingUp, Activity, Award, Flame } from 'lucide-react';
 import { topics, mockUser } from '@/lib/mockData';
 import type { UserBadge } from '@/lib/types';
 import Link from 'next/link';
@@ -9,11 +9,12 @@ import { Button } from '@/components/ui/button';
 import * as LucideIcons from 'lucide-react';
 import type { LucideIcon } from '@/lib/types';
 import { format, formatDistanceToNow } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 const IconMap: Record<string, LucideIcon> = LucideIcons as any;
 
 export default function DashboardPage() {
-  const { name, progress, activity, badges } = mockUser;
+  const { name, progress, activity, badges, currentStreak } = mockUser;
   const completedTopics = progress.completedTopicIds.length;
   const totalTopics = topics.length;
   const topicsProgress = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
@@ -43,7 +44,7 @@ export default function DashboardPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
         <Card className="shadow-lg rounded-xl">
           <CardHeader className="pb-2">
             <CardDescription className="text-base">Topics Completed</CardDescription>
@@ -68,11 +69,21 @@ export default function DashboardPage() {
             <CardTitle className="font-headline text-4xl">{badges.length}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
-            {badges.slice(0,5).map(badge => ( // Show up to 5 badges
-              <span key={badge.id} title={`${badge.name} - Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`} className="p-2 bg-secondary rounded-full">
+            {badges.slice(0,3).map(badge => ( // Show up to 3-4 badges for space
+              <span key={badge.id} title={`${badge.name} - Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`} className="p-2 bg-secondary rounded-full group cursor-pointer">
                 <BadgeIcon iconName={badge.iconName} color={badge.color} />
               </span>
             ))}
+             {badges.length > 3 && <span className="text-sm text-muted-foreground self-center">+{badges.length-3} more</span>}
+          </CardContent>
+        </Card>
+        <Card className="shadow-lg rounded-xl">
+          <CardHeader className="pb-2">
+            <CardDescription className="text-base">Current Streak</CardDescription>
+            <CardTitle className="font-headline text-4xl">{currentStreak || 0} <span className="text-2xl">days</span></CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Flame className={cn("h-8 w-8", currentStreak && currentStreak > 0 ? "text-orange-500" : "text-muted-foreground")} />
           </CardContent>
         </Card>
       </div>

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { Award, Activity as ActivityIcon, CalendarDays, Mail, User, BarChart3, CheckCircle, ListChecks } from 'lucide-react';
+import { Award, Activity as ActivityIcon, CalendarDays, Mail, User, BarChart3, CheckCircle, ListChecks, Flame } from 'lucide-react';
 import { format, formatDistanceToNow } from 'date-fns';
 import * as LucideIcons from 'lucide-react';
 import type { LucideIcon } from '@/lib/types';
@@ -18,18 +18,19 @@ const BadgeIcon = ({ iconName, color }: { iconName: string; color?: string }) =>
   return <IconComponent className={cn("h-6 w-6", color || 'text-foreground')} />;
 };
 
-const ActivityTypeIcon = ({ type }: { type: mockUser['activity'][0]['type']}) => {
+const ActivityTypeIcon = ({ type }: mockUser['activity'][0]['type'] | 'streak_updated') => {
   switch (type) {
     case 'quiz_taken': return <ListChecks className="h-5 w-5 text-blue-500 mr-3 flex-shrink-0" />;
     case 'topic_completed': return <CheckCircle className="h-5 w-5 text-green-500 mr-3 flex-shrink-0" />;
     case 'badge_earned': return <Award className="h-5 w-5 text-yellow-500 mr-3 flex-shrink-0" />;
     case 'account_created': return <User className="h-5 w-5 text-primary mr-3 flex-shrink-0" />;
+    case 'streak_updated': return <Flame className="h-5 w-5 text-orange-500 mr-3 flex-shrink-0" />;
     default: return <ActivityIcon className="h-5 w-5 text-gray-500 mr-3 flex-shrink-0" />;
   }
 }
 
 export default function ProfilePage() {
-  const { name, username, email, avatarUrl, joinDate, badges, activity, progress } = mockUser;
+  const { name, username, email, avatarUrl, joinDate, badges, activity, progress, currentStreak, longestStreak } = mockUser;
   const completedTopicsCount = progress.completedTopicIds.length;
   const totalTopicsCount = topics.length;
   const learningProgressPercentage = totalTopicsCount > 0 ? (completedTopicsCount / totalTopicsCount) * 100 : 0;
@@ -52,7 +53,7 @@ export default function ProfilePage() {
           <div className="text-center sm:text-left">
             <CardTitle className="font-headline text-3xl sm:text-4xl text-foreground">{name}</CardTitle>
             {username && <CardDescription className="text-lg text-muted-foreground mt-1">@{username}</CardDescription>}
-            <div className="mt-3 flex flex-col sm:flex-row sm:items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+            <div className="mt-3 flex flex-col sm:flex-row sm:items-center flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground">
               {email && (
                 <div className="flex items-center">
                   <Mail className="h-4 w-4 mr-1.5" /> {email}
@@ -61,6 +62,11 @@ export default function ProfilePage() {
               <div className="flex items-center">
                 <CalendarDays className="h-4 w-4 mr-1.5" /> Joined {formatDistanceToNow(new Date(joinDate), { addSuffix: true })}
               </div>
+              {currentStreak !== undefined && (
+                <div className="flex items-center" title={`Longest Streak: ${longestStreak || 0} days`}>
+                  <Flame className="h-4 w-4 mr-1.5 text-orange-500" /> {currentStreak} day streak
+                </div>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -106,7 +112,7 @@ export default function ProfilePage() {
                 <ul className="space-y-4 max-h-96 overflow-y-auto pr-2">
                   {activity.map((act) => (
                     <li key={act.id} className="flex items-start pb-4 border-b border-border last:border-b-0">
-                      <ActivityTypeIcon type={act.type} />
+                      <ActivityTypeIcon type={act.type as any} />
                       <div className="flex-grow">
                         <p className="font-medium text-foreground">{act.title}</p>
                         {act.details && <p className="text-sm text-muted-foreground">{act.details}</p>}
@@ -137,8 +143,15 @@ export default function ProfilePage() {
               {badges.length > 0 ? (
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 gap-4">
                   {badges.map((badge) => (
-                    <div key={badge.id} className="flex flex-col items-center text-center p-3 bg-secondary/50 rounded-lg" title={`Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`}>
-                      <div className={cn("p-3 rounded-full mb-2 bg-primary/10", badge.color?.replace('text-', 'bg-') + '/10')}>
+                    <div 
+                      key={badge.id} 
+                      className="group flex flex-col items-center text-center p-3 bg-secondary/50 rounded-lg hover:shadow-md transition-shadow" 
+                      title={`${badge.name} - Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`}
+                    >
+                      <div className={cn(
+                        "p-3 rounded-full mb-2 bg-primary/10 group-hover:scale-110 transition-transform duration-200 ease-in-out", 
+                        badge.color?.replace('text-', 'bg-') + '/20' // Ensure a bit more vibrant bg for colored badges
+                       )}>
                          <BadgeIcon iconName={badge.iconName} color={badge.color} />
                       </div>
                       <p className="text-sm font-medium text-foreground">{badge.name}</p>
@@ -151,7 +164,6 @@ export default function ProfilePage() {
             </CardContent>
           </Card>
 
-          {/* Quiz History (Optional - Can be a separate section or page later) */}
            {progress.quizAttempts.length > 0 && (
             <Card className="shadow-lg rounded-xl">
               <CardHeader>
