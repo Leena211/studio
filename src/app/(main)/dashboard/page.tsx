@@ -1,28 +1,36 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, ListChecks, Target, TrendingUp } from 'lucide-react';
-import { topics } from '@/lib/mockData'; // For total topics count
+import { CheckCircle, ListChecks, Target, TrendingUp, Activity, Award } from 'lucide-react';
+import { topics, mockUser } from '@/lib/mockData';
+import type { UserBadge } from '@/lib/types';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import * as LucideIcons from 'lucide-react';
+import type { LucideIcon } from '@/lib/types';
+import { format, formatDistanceToNow } from 'date-fns';
 
-// Mock data - replace with actual user data fetching later
-const userProgressData = {
-  name: "Teen Investor",
-  completedTopics: 2,
-  totalTopics: topics.length,
-  averageQuizScore: 75, // Percentage
-  recentActivity: [
-    { type: "quiz", title: "Budgeting Basics Quiz", score: "80%", date: "2 days ago" },
-    { type: "topic", title: "Completed: Student Loans", date: "3 days ago" },
-  ],
-  badges: [
-    { name: "Budgeting Pro", icon: <Target className="h-5 w-5 text-green-500" /> },
-    { name: "Quiz Whiz", icon: <ListChecks className="h-5 w-5 text-blue-500" /> },
-  ]
-};
+const IconMap: Record<string, LucideIcon> = LucideIcons as any;
 
 export default function DashboardPage() {
-  const { name, completedTopics, totalTopics, averageQuizScore, recentActivity, badges } = userProgressData;
+  const { name, progress, activity, badges } = mockUser;
+  const completedTopics = progress.completedTopicIds.length;
+  const totalTopics = topics.length;
   const topicsProgress = totalTopics > 0 ? (completedTopics / totalTopics) * 100 : 0;
+
+  const averageQuizScore = progress.averageQuizScore !== undefined 
+    ? progress.averageQuizScore 
+    : progress.quizAttempts.length > 0
+      ? (progress.quizAttempts.reduce((sum, attempt) => sum + (attempt.score / attempt.totalQuestions), 0) / progress.quizAttempts.length) * 100
+      : 0;
+      
+  const recentActivity = activity.slice(0, 3); // Show top 3 recent activities
+
+  const BadgeIcon = ({ iconName, color }: { iconName: string; color?: string }) => {
+    const IconComponent = IconMap[iconName] || Award;
+    return <IconComponent className={cn("h-5 w-5", color || 'text-foreground')} />;
+  };
+
 
   return (
     <div className="container mx-auto max-w-screen-lg px-4 py-8 sm:px-6 lg:px-8">
@@ -48,7 +56,7 @@ export default function DashboardPage() {
         <Card className="shadow-lg rounded-xl">
           <CardHeader className="pb-2">
             <CardDescription className="text-base">Average Quiz Score</CardDescription>
-            <CardTitle className="font-headline text-4xl">{averageQuizScore}%</CardTitle>
+            <CardTitle className="font-headline text-4xl">{averageQuizScore.toFixed(0)}%</CardTitle>
           </CardHeader>
           <CardContent>
             <TrendingUp className="h-8 w-8 text-green-500" />
@@ -59,9 +67,11 @@ export default function DashboardPage() {
             <CardDescription className="text-base">Badges Earned</CardDescription>
             <CardTitle className="font-headline text-4xl">{badges.length}</CardTitle>
           </CardHeader>
-          <CardContent className="flex space-x-2">
-            {badges.map(badge => (
-              <span key={badge.name} title={badge.name} className="p-2 bg-secondary rounded-full">{badge.icon}</span>
+          <CardContent className="flex flex-wrap gap-2">
+            {badges.slice(0,5).map(badge => ( // Show up to 5 badges
+              <span key={badge.id} title={`${badge.name} - Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`} className="p-2 bg-secondary rounded-full">
+                <BadgeIcon iconName={badge.iconName} color={badge.color} />
+              </span>
             ))}
           </CardContent>
         </Card>
@@ -77,15 +87,27 @@ export default function DashboardPage() {
           <CardContent>
             {recentActivity.length > 0 ? (
               <ul className="space-y-4">
-                {recentActivity.map((activity, index) => (
-                  <li key={index} className="flex items-center justify-between p-3 bg-muted/30 rounded-md">
-                    <div>
-                      <p className="font-medium text-foreground">{activity.title}</p>
-                      {activity.type === "quiz" && <p className="text-sm text-primary">Score: {activity.score}</p>}
+                {recentActivity.map((act) => (
+                  <li key={act.id} className="flex items-start justify-between p-3 bg-muted/30 rounded-md">
+                    <div className="flex items-center">
+                       <Activity className="h-5 w-5 text-primary mr-3 mt-1 flex-shrink-0" />
+                      <div>
+                        <p className="font-medium text-foreground">{act.title}</p>
+                        {act.details && <p className="text-sm text-muted-foreground">{act.details}</p>}
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">{activity.date}</p>
+                    <p className="text-sm text-muted-foreground whitespace-nowrap ml-2">
+                      {formatDistanceToNow(new Date(act.date), { addSuffix: true })}
+                    </p>
                   </li>
                 ))}
+                 {activity.length > 3 && (
+                  <li className="pt-2 text-center">
+                    <Button variant="link" asChild>
+                      <Link href="/profile#activity">View all activity</Link>
+                    </Button>
+                  </li>
+                )}
               </ul>
             ) : (
               <p className="text-muted-foreground">No recent activity to display.</p>
@@ -100,19 +122,26 @@ export default function DashboardPage() {
           <CardContent>
             <ul className="space-y-3">
               <li className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-primary mr-2" /> 
-                <span className="text-foreground">Explore "Investing Basics" topic.</span>
+                <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
+                <span className="text-foreground">Explore "ETFs Explained" topic.</span>
               </li>
               <li className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-primary mr-2" /> 
-                <span className="text-foreground">Try the "Compound Interest Calculator".</span>
+                <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
+                <span className="text-foreground">Try the "Simple Interest Calculator".</span>
               </li>
-              <li className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-primary mr-2" /> 
-                <span className="text-foreground">Review your notes on "Budgeting".</span>
-              </li>
+              {completedTopics < totalTopics && (
+                <li className="flex items-center">
+                   <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
+                  <span className="text-foreground">
+                    Continue learning from{" "}
+                    <Link href="/topics" className="text-primary hover:underline">
+                       available topics
+                    </Link>.
+                  </span>
+                </li>
+              )}
             </ul>
-             <p className="text-sm text-muted-foreground mt-4">This section will be personalized based on your progress soon!</p>
+             <p className="text-sm text-muted-foreground mt-4">Personalized recommendations coming soon!</p>
           </CardContent>
         </Card>
       </div>

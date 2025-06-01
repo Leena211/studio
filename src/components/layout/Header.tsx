@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Landmark, PiggyBank, TrendingUp, Sparkles, LayoutDashboard, HomeIcon, Calculator, BookOpen, Info } from 'lucide-react';
+import { Menu, Landmark, UserCircle, Calculator, BookOpen, Info, Sparkles, LayoutDashboard, HomeIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
@@ -22,6 +22,7 @@ const navItems: NavItem[] = [
   { href: '/calculators', label: 'Calculators', icon: Calculator },
   { href: '/ai-financial-guide', label: 'AI Guide', icon: Sparkles },
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/profile', label: 'Profile', icon: UserCircle },
 ];
 
 export function Header() {
@@ -34,7 +35,7 @@ export function Header() {
       variant="ghost"
       className={cn(
         "justify-start text-base font-medium hover:bg-accent/10 hover:text-primary",
-        pathname === href ? "text-primary font-semibold" : "text-foreground/80",
+        pathname === href ? "text-primary font-semibold bg-primary/5" : "text-foreground/80",
         isMobile ? "w-full" : ""
       )}
     >
@@ -57,7 +58,7 @@ export function Header() {
           <span className="font-headline text-2xl font-bold text-primary">FinLit Teens</span>
         </Link>
 
-        <nav className="hidden md:flex items-center space-x-2 lg:space-x-4">
+        <nav className="hidden md:flex items-center space-x-1 lg:space-x-2">
           {navItems.map((item) => (
             <NavLink key={item.href} {...item} />
           ))}
@@ -72,7 +73,7 @@ export function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs p-6">
-              <div className="flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
                 <Link href="/" className="mb-4 flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
                   <Landmark className="h-8 w-8 text-primary" />
                   <span className="font-headline text-xl font-bold text-primary">FinLit Teens</span>

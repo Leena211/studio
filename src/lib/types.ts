@@ -28,8 +28,43 @@ export interface Quiz {
   questions: QuizQuestion[];
 }
 
+export interface UserBadge {
+  id: string;
+  name: string;
+  iconName: string; // Lucide icon name
+  color?: string; // Tailwind color class for the icon
+  dateEarned: string; // ISO date string
+}
+
+export interface UserActivity {
+  id: string;
+  type: 'topic_completed' | 'quiz_taken' | 'badge_earned' | 'account_created';
+  title: string;
+  date: string; // ISO date string
+  details?: string; // e.g., "Score: 80%" or "Earned 'Budgeting Pro'"
+}
+
 export interface UserProgress {
-  userId: string;
-  completedTopics: string[];
-  quizScores: Record<string, { score: number; total: number }>;
+  completedTopicIds: string[]; // Array of topic IDs
+  // quizScores: Record<string, { score: number; totalQuestions: number; dateTaken: string }>; // topicId -> score details
+  quizAttempts: Array<{
+    quizId: string; // Corresponds to topicId for simplicity
+    topicTitle: string;
+    score: number;
+    totalQuestions: number;
+    dateTaken: string; // ISO date string
+  }>;
+  averageQuizScore?: number; // Optional, can be calculated
+}
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  username?: string;
+  email?: string;
+  avatarUrl?: string; // URL to an avatar image
+  joinDate: string; // ISO date string
+  badges: UserBadge[];
+  activity: UserActivity[];
+  progress: UserProgress;
 }

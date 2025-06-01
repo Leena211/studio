@@ -1,4 +1,5 @@
-import type { Topic, Quiz } from './types';
+import type { Topic, Quiz, UserProfile } from './types';
+import * as LucideIcons from 'lucide-react';
 
 export const topics: Topic[] = [
   {
@@ -49,7 +50,7 @@ export const topics: Topic[] = [
     examples: ['Equity Linked Savings Scheme (ELSS) for tax saving.', 'A large-cap equity fund investing in big companies.', 'A debt fund investing in government bonds.'],
     tips: ['Research the fund manager\'s track record.', 'Understand the fund\'s investment objective and risk level.', 'Pay attention to the expense ratio and any exit loads.', 'Consider Systematic Investment Plans (SIPs) for regular investing.'],
     iconName: 'FileText',
-    color: 'text-yellow-600', // Darker yellow for better contrast
+    color: 'text-yellow-600',
   },
   {
     id: 'money-management',
@@ -121,6 +122,36 @@ export const quizzes: Quiz[] = [
       },
     ],
   },
-  // Quizzes for ETFs, Mutual Funds, Money Management will be similar structure
-  // For brevity, not adding all questions here.
 ];
+
+export const mockUser: UserProfile = {
+  id: 'user123',
+  name: 'Alex Johnson',
+  username: 'alex_the_financier',
+  email: 'alex.johnson@example.com',
+  avatarUrl: 'https://placehold.co/128x128.png', // data-ai-hint="user avatar cartoon"
+  joinDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), // Joined 60 days ago
+  badges: [
+    { id: 'badge1', name: 'Budgeting Pro', iconName: 'Target', color: 'text-green-500', dateEarned: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'badge2', name: 'Quiz Master', iconName: 'ListChecks', color: 'text-blue-500', dateEarned: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'badge3', name: 'Interest Explorer', iconName: 'TrendingUp', color: 'text-red-500', dateEarned: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
+  ],
+  activity: [
+    { id: 'act1', type: 'quiz_taken', title: 'Budgeting Basics Quiz', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), details: 'Score: 3/3 (100%)' },
+    { id: 'act2', type: 'badge_earned', title: "Earned 'Quiz Master'", date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'act3', type: 'topic_completed', title: 'Student Loans', date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'act4', type: 'quiz_taken', title: 'Interest Rates Quiz', date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), details: 'Score: 1/1 (100%)' },
+    { id: 'act5', type: 'badge_earned', title: "Earned 'Interest Explorer'", date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'act6', type: 'topic_completed', title: 'Budgeting Basics', date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'act7', type: 'account_created', title: 'Joined FinLit Teens', date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString() },
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Sort recent first
+  progress: {
+    completedTopicIds: ['budgeting', 'student-loans', 'interest-rates'],
+    quizAttempts: [
+      { quizId: 'budgeting', topicTitle: 'Budgeting Basics', score: 3, totalQuestions: 3, dateTaken: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
+      { quizId: 'interest-rates', topicTitle: 'Interest Rates', score: 1, totalQuestions: 1, dateTaken: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
+      { quizId: 'student-loans', topicTitle: 'Student Loans', score: 1, totalQuestions: 2, dateTaken: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() },
+    ].sort((a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime()), // Sort recent first
+    averageQuizScore: ( (3/3 + 1/1 + 1/2) / 3 ) * 100, // Calculated for mock
+  },
+};
