@@ -6,21 +6,20 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
     ? props.strokeWidth 
     : parseFloat(props.strokeWidth || "1.5");
   
-  const bookStrokeWidth = baseStrokeWidth * 0.7;
+  const symbolStrokeWidth = baseStrokeWidth * 0.8; // Adjusted for Rupee symbol
   const coinStrokeWidth = baseStrokeWidth * 0.3;
 
-  // Green for bag, Gold for coins, Dark Green/Brown for book
+  // Green for bag, Gold for coins, Dark Green/Brown for symbol
   const bagColor = "hsl(130, 45%, 45%)"; // A pleasant green
   const bagStrokeColor = "hsl(130, 45%, 35%)"; // Darker green for outline
   const coinColor = "hsl(45, 100%, 60%)"; // Bright gold
   const coinStrokeColor = "hsl(40, 80%, 50%)"; // Slightly darker gold for coin outline
-  const bookSymbolColor = "hsl(30, 30%, 30%)"; // Dark brown for knowledge symbol
+  const rupeeSymbolColor = "hsl(30, 30%, 30%)"; // Dark brown for knowledge symbol
 
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      // fill and stroke removed from here as internal paths define their own
       strokeWidth={baseStrokeWidth}
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -52,13 +51,35 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
       <circle cx="16.5" cy="7.5" r="1.6" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
       <circle cx="12.5" cy="5.5" r="1.3" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
 
-
-      {/* Open Book Symbol on the front of the bag */}
+      {/* Rupee Symbol (₹) on the front of the bag */}
+      {/* Main vertical bar */}
       <path 
-        d="M10 14.5 L14 14.5 M10 16.5 L14 16.5 M12 13 V18" // Represents open book pages and spine
+        d="M12 12 V 18" 
+        fill="none" 
+        stroke={rupeeSymbolColor} 
+        strokeWidth={symbolStrokeWidth} 
+      />
+      {/* Top horizontal bar */}
+      <path 
+        d="M9.5 12 H 14.5" 
+        fill="none" 
+        stroke={rupeeSymbolColor} 
+        strokeWidth={symbolStrokeWidth} 
+      />
+      {/* Lower horizontal bar (slightly shorter or offset for Rupee 'R' part) */}
+      <path 
+        d="M9.5 14 H 13.5" 
+        fill="none" 
+        stroke={rupeeSymbolColor} 
+        strokeWidth={symbolStrokeWidth} 
+      />
+      {/* 'R' curve part (simplified) - this is tricky to do perfectly as a simple path, might need a more complex one or adjust strokes */}
+      {/* A simple 'R' like tail - may need adjustment */}
+       <path 
+        d="M12 14.5 C 13.5 14.5 14 15 14 15.5 S 13.5 16.5 12.5 16.5"
         fill="none"
-        stroke={bookSymbolColor} 
-        strokeWidth={bookStrokeWidth} 
+        stroke={rupeeSymbolColor}
+        strokeWidth={symbolStrokeWidth*0.8} 
       />
     </svg>
   );
