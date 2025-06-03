@@ -4,11 +4,12 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Landmark, UserCircle, Calculator, BookOpen, Info, Sparkles, LayoutDashboard, HomeIcon } from 'lucide-react';
+import { Menu, UserCircle, Calculator, BookOpen, Sparkles, LayoutDashboard, HomeIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import type { LucideIcon } from 'lucide-react';
 import React from 'react';
+import { AppLogoIcon } from '@/components/icons/AppLogoIcon';
 
 interface NavItem {
   href: string;
@@ -54,7 +55,7 @@ export function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto flex h-16 max-w-screen-2xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-          <Landmark className="h-8 w-8 text-primary" />
+          <AppLogoIcon className="h-8 w-8 text-primary" />
           <span className="font-headline text-2xl font-bold text-primary">FinLit Teens</span>
         </Link>
 
@@ -75,7 +76,7 @@ export function Header() {
             <SheetContent side="right" className="w-full max-w-xs p-6">
               <div className="flex flex-col space-y-2">
                 <Link href="/" className="mb-4 flex items-center space-x-2" onClick={() => setIsMobileMenuOpen(false)}>
-                  <Landmark className="h-8 w-8 text-primary" />
+                  <AppLogoIcon className="h-8 w-8 text-primary" />
                   <span className="font-headline text-xl font-bold text-primary">FinLit Teens</span>
                 </Link>
                 {navItems.map((item) => (
