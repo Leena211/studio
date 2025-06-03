@@ -13,6 +13,7 @@ export interface Topic {
   tips?: string[];
   iconName?: string; // Name of the Lucide icon, e.g., 'PiggyBank'
   color?: string; // Tailwind text color class, e.g., 'text-green-500'
+  estimatedTime?: string; // e.g., "5 min read", "10 min activity"
 }
 
 export interface QuizQuestion {

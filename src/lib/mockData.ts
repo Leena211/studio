@@ -11,6 +11,7 @@ export const topics: Topic[] = [
     tips: ['Be realistic: Don\'t set overly restrictive goals you can\'t stick to.', 'Review regularly: Adjust your budget as your income or expenses change.', 'Track everything: Small expenses add up, so note them down.', 'Celebrate milestones: Reward yourself (within budget!) for achieving savings goals.'],
     iconName: 'PiggyBank',
     color: 'text-green-500',
+    estimatedTime: '10 min read',
   },
   {
     id: 'student-loans',
@@ -21,6 +22,7 @@ export const topics: Topic[] = [
     tips: ['Borrow only what you need: Don\'t take out more than necessary for tuition and essential expenses.', 'Understand the terms: Read the fine print regarding interest rates, fees, and repayment schedules.', 'Explore scholarships and grants first: These don\'t need to be repaid.', 'Make payments on time: Late payments can negatively impact your credit score.'],
     iconName: 'School',
     color: 'text-blue-500',
+    estimatedTime: '12 min read',
   },
   {
     id: 'interest-rates',
@@ -31,6 +33,7 @@ export const topics: Topic[] = [
     tips: ['For savings: Look for accounts with higher compound interest rates.', 'For loans: Aim for the lowest possible interest rate and understand how it\'s calculated.', 'Compound interest is powerful: Start saving early to maximize its benefits.', 'Beware of high-interest debt: Credit cards can have very high rates if balances aren\'t paid off.'],
     iconName: 'TrendingUp',
     color: 'text-red-500',
+    estimatedTime: '8 min read',
   },
   {
     id: 'etfs',
@@ -41,6 +44,7 @@ export const topics: Topic[] = [
     tips: ['Understand what the ETF tracks: Know the underlying assets and index.', 'Check the expense ratio: Lower is generally better.', 'Consider your investment goals: Choose ETFs that align with your risk tolerance and objectives.', 'Diversification: ETFs can be a good way to diversify, but don\'t put all your eggs in one ETF basket.'],
     iconName: 'Landmark',
     color: 'text-purple-500',
+    estimatedTime: '15 min read',
   },
   {
     id: 'mutual-funds',
@@ -51,6 +55,7 @@ export const topics: Topic[] = [
     tips: ['Research the fund manager\'s track record.', 'Understand the fund\'s investment objective and risk level.', 'Pay attention to the expense ratio and any exit loads.', 'Consider Systematic Investment Plans (SIPs) for regular investing.'],
     iconName: 'FileText',
     color: 'text-yellow-600',
+    estimatedTime: '14 min read',
   },
   {
     id: 'money-management',
@@ -61,6 +66,7 @@ export const topics: Topic[] = [
     tips: ['Educate yourself continuously about personal finance.', 'Automate your savings and investments.', 'Avoid impulsive spending.', 'Regularly review your financial health and goals.'],
     iconName: 'Wallet',
     color: 'text-indigo-500',
+    estimatedTime: '10 min read',
   }
 ];
 

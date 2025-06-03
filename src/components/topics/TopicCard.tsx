@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import type { Topic, LucideIcon } from '@/lib/types';
 import * as LucideIcons from 'lucide-react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Clock } from 'lucide-react';
 
 interface TopicCardProps {
   topic: Topic;
@@ -29,6 +29,12 @@ export function TopicCard({ topic }: TopicCardProps) {
         <CardDescription className="text-base text-muted-foreground mb-4 flex-grow">
           {topic.description}
         </CardDescription>
+        {topic.estimatedTime && (
+          <div className="flex items-center text-xs text-muted-foreground mb-4">
+            <Clock className="h-3.5 w-3.5 mr-1.5" />
+            <span>{topic.estimatedTime}</span>
+          </div>
+        )}
         <Button asChild variant="outline" className="mt-auto w-full group hover:bg-primary hover:text-primary-foreground transition-colors">
           <Link href={`/topics/${topic.id}`}>
             Learn More <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />

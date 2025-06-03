@@ -1,7 +1,7 @@
 import type { Topic, LucideIcon } from '@/lib/types';
 import * as LucideIcons from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Clock } from 'lucide-react';
 
 interface TopicDetailProps {
   topic: Topic;
@@ -16,11 +16,19 @@ export function TopicDetail({ topic }: TopicDetailProps) {
     <div className="space-y-8">
       <Card className="overflow-hidden shadow-xl rounded-xl">
         <CardHeader className={`p-8 bg-gradient-to-br ${topic.color ? `from-${topic.color.split('-')[1]}-500/20 to-${topic.color.split('-')[1]}-500/5` : 'from-primary/20 to-primary/5'}`}>
-          <div className="flex items-center space-x-4">
-            <div className={`p-4 rounded-lg ${topic.color ? `bg-${topic.color.split('-')[1]}-100 ${topic.color}` : 'bg-primary/10 text-primary'}`}>
-              <IconComponent className="h-10 w-10" />
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between">
+            <div className="flex items-center space-x-4 mb-4 sm:mb-0">
+              <div className={`p-4 rounded-lg ${topic.color ? `bg-${topic.color.split('-')[1]}-100 ${topic.color}` : 'bg-primary/10 text-primary'}`}>
+                <IconComponent className="h-10 w-10" />
+              </div>
+              <CardTitle className="font-headline text-3xl md:text-4xl text-foreground">{topic.title}</CardTitle>
             </div>
-            <CardTitle className="font-headline text-3xl md:text-4xl text-foreground">{topic.title}</CardTitle>
+            {topic.estimatedTime && (
+              <div className="flex items-center text-sm text-muted-foreground bg-background/70 px-3 py-1.5 rounded-full self-start sm:self-center">
+                <Clock className="h-4 w-4 mr-1.5" />
+                <span>{topic.estimatedTime}</span>
+              </div>
+            )}
           </div>
         </CardHeader>
         <CardContent className="p-6 md:p-8 text-lg text-foreground/90 leading-relaxed">

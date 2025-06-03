@@ -1,7 +1,7 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Separator } from '@/components/ui/separator';
-import { CheckCircle, ListChecks, Target, TrendingUp, Activity, Award, Flame } from 'lucide-react';
+import { CheckCircle, ListChecks, Target, TrendingUp, Activity, Award, Flame, BookOpen, RefreshCw } from 'lucide-react';
 import { topics, mockUser } from '@/lib/mockData';
 import type { UserBadge } from '@/lib/types';
 import Link from 'next/link';
@@ -31,6 +31,9 @@ export default function DashboardPage() {
     const IconComponent = IconMap[iconName] || Award;
     return <IconComponent className={cn("h-5 w-5", color || 'text-foreground')} />;
   };
+
+  const latestQuizAttempt = progress.quizAttempts.length > 0 ? progress.quizAttempts[0] : null;
+  const nextTopicToExplore = topics.find(topic => !progress.completedTopicIds.includes(topic.id)) || topics[0];
 
 
   return (
@@ -69,7 +72,7 @@ export default function DashboardPage() {
             <CardTitle className="font-headline text-4xl">{badges.length}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
-            {badges.slice(0,3).map(badge => ( // Show up to 3-4 badges for space
+            {badges.slice(0,3).map(badge => ( 
               <span key={badge.id} title={`${badge.name} - Earned ${formatDistanceToNow(new Date(badge.dateEarned), { addSuffix: true })}`} className="p-2 bg-secondary rounded-full group cursor-pointer">
                 <BadgeIcon iconName={badge.iconName} color={badge.color} />
               </span>
@@ -131,28 +134,40 @@ export default function DashboardPage() {
             <CardTitle className="font-headline text-2xl">Recommended Next Steps</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-3">
-              <li className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
-                <span className="text-foreground">Explore "ETFs Explained" topic.</span>
-              </li>
-              <li className="flex items-center">
-                <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
-                <span className="text-foreground">Try the "Simple Interest Calculator".</span>
-              </li>
-              {completedTopics < totalTopics && (
-                <li className="flex items-center">
-                   <CheckCircle className="h-5 w-5 text-primary mr-2 flex-shrink-0" /> 
-                  <span className="text-foreground">
-                    Continue learning from{" "}
-                    <Link href="/topics" className="text-primary hover:underline">
-                       available topics
-                    </Link>.
-                  </span>
+            <ul className="space-y-4">
+              {latestQuizAttempt && (
+                 <li className="flex items-start p-3 bg-primary/5 rounded-md hover:shadow-sm transition-shadow">
+                    <RefreshCw className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
+                    <div>
+                        <p className="font-medium text-foreground">
+                        Review material for <Link href={`/topics/${latestQuizAttempt.quizId}`} className="text-primary hover:underline">"{latestQuizAttempt.topicTitle}"</Link>.
+                        </p>
+                        <p className="text-sm text-muted-foreground">You last scored {latestQuizAttempt.score}/{latestQuizAttempt.totalQuestions}.</p>
+                    </div>
                 </li>
               )}
+              {nextTopicToExplore && (
+                <li className="flex items-start p-3 bg-primary/5 rounded-md hover:shadow-sm transition-shadow">
+                    <BookOpen className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /> 
+                    <div>
+                        <p className="font-medium text-foreground">
+                        Start learning about <Link href={`/topics/${nextTopicToExplore.id}`} className="text-primary hover:underline">"{nextTopicToExplore.title}"</Link>.
+                        </p>
+                        {nextTopicToExplore.estimatedTime && <p className="text-sm text-muted-foreground">{nextTopicToExplore.estimatedTime}.</p>}
+                    </div>
+                </li>
+              )}
+              <li className="flex items-start p-3 bg-primary/5 rounded-md hover:shadow-sm transition-shadow">
+                <LucideIcons.Calculator className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" /> 
+                 <div>
+                    <p className="font-medium text-foreground">
+                        Try the <Link href="/calculators" className="text-primary hover:underline">Simple Interest Calculator</Link>.
+                    </p>
+                    <p className="text-sm text-muted-foreground">Understand how interest works.</p>
+                </div>
+              </li>
             </ul>
-             <p className="text-sm text-muted-foreground mt-4">Personalized recommendations coming soon!</p>
+             {(!latestQuizAttempt || !nextTopicToExplore) && <p className="text-sm text-muted-foreground mt-4">Keep up the great work!</p>}
           </CardContent>
         </Card>
       </div>
