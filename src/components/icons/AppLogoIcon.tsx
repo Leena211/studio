@@ -6,7 +6,7 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
     ? props.strokeWidth 
     : parseFloat(props.strokeWidth || "1.5");
   
-  const symbolStrokeWidth = baseStrokeWidth * 0.8; // Adjusted for Rupee symbol
+  const symbolStrokeWidth = baseStrokeWidth * 0.8; 
   const coinStrokeWidth = baseStrokeWidth * 0.3;
 
   // Green for bag, Gold for coins, Dark Green/Brown for symbol
@@ -14,7 +14,7 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
   const bagStrokeColor = "hsl(130, 45%, 35%)"; // Darker green for outline
   const coinColor = "hsl(45, 100%, 60%)"; // Bright gold
   const coinStrokeColor = "hsl(40, 80%, 50%)"; // Slightly darker gold for coin outline
-  const rupeeSymbolColor = "hsl(30, 30%, 30%)"; // Dark brown for knowledge symbol
+  const bookSymbolColor = "hsl(30, 30%, 30%)"; // Dark brown for knowledge symbol
 
   return (
     <svg
@@ -51,35 +51,34 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
       <circle cx="16.5" cy="7.5" r="1.6" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
       <circle cx="12.5" cy="5.5" r="1.3" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
 
-      {/* Rupee Symbol (₹) on the front of the bag */}
-      {/* Main vertical bar */}
+      {/* Open Book Symbol */}
+      {/* Spine */}
       <path 
-        d="M12 12 V 18" 
+        d="M12 12 V 17.5" 
         fill="none" 
-        stroke={rupeeSymbolColor} 
-        strokeWidth={symbolStrokeWidth} 
+        stroke={bookSymbolColor} 
+        strokeWidth={symbolStrokeWidth * 0.9} 
       />
-      {/* Top horizontal bar */}
+      {/* Left page outline */}
       <path 
-        d="M9.5 12 H 14.5" 
+        d="M12 12.5 Q9.5 12 9 14 C8.5 16 9.5 17.5 12 17.5" 
         fill="none" 
-        stroke={rupeeSymbolColor} 
-        strokeWidth={symbolStrokeWidth} 
+        stroke={bookSymbolColor} 
+        strokeWidth={symbolStrokeWidth * 0.9} 
       />
-      {/* Lower horizontal bar (slightly shorter or offset for Rupee 'R' part) */}
+      {/* Right page outline */}
       <path 
-        d="M9.5 14 H 13.5" 
+        d="M12 12.5 Q14.5 12 15 14 C15.5 16 14.5 17.5 12 17.5" 
         fill="none" 
-        stroke={rupeeSymbolColor} 
-        strokeWidth={symbolStrokeWidth} 
+        stroke={bookSymbolColor} 
+        strokeWidth={symbolStrokeWidth * 0.9}
       />
-      {/* 'R' curve part (simplified) - this is tricky to do perfectly as a simple path, might need a more complex one or adjust strokes */}
-      {/* A simple 'R' like tail - may need adjustment */}
-       <path 
-        d="M12 14.5 C 13.5 14.5 14 15 14 15.5 S 13.5 16.5 12.5 16.5"
+      {/* Top edge of pages (simplified) */}
+       <path
+        d="M9 14 C9.5 13.5 11 13.2 12 13.2 C13 13.2 14.5 13.5 15 14"
         fill="none"
-        stroke={rupeeSymbolColor}
-        strokeWidth={symbolStrokeWidth*0.8} 
+        stroke={bookSymbolColor}
+        strokeWidth={symbolStrokeWidth * 0.7}
       />
     </svg>
   );
