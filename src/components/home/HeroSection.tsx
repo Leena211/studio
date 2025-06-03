@@ -1,7 +1,8 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
-import Image from 'next/image';
+import { AppLogoIcon } from '@/components/icons/AppLogoIcon';
 
 export function HeroSection() {
   return (
@@ -28,15 +29,10 @@ export function HeroSection() {
               </Button>
             </div>
           </div>
-          <div className="relative order-first md:order-last">
-            <Image
-              src="https://placehold.co/600x400.png"
-              alt="Financial literacy concept illustration"
-              data-ai-hint="financial education students"
-              width={600}
-              height={400}
-              className="rounded-xl shadow-2xl mx-auto"
-              priority
+          <div className="relative order-first md:order-last flex items-center justify-center p-4 md:p-8">
+            <AppLogoIcon 
+              className="w-64 h-64 sm:w-80 sm:h-80 md:w-96 md:h-96 lg:w-[28rem] lg:h-[28rem] drop-shadow-2xl" 
+              aria-label="FinLit Teens app logo: a green bag overfilled with gold coins, featuring a book symbol for knowledge"
             />
           </div>
         </div>
