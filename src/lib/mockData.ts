@@ -1,3 +1,4 @@
+
 import type { Topic, Quiz, UserProfile } from './types';
 import * as LucideIcons from 'lucide-react';
 
@@ -130,38 +131,27 @@ export const quizzes: Quiz[] = [
   },
 ];
 
+// Represents a user who has just signed up.
 export const mockUser: UserProfile = {
   id: 'user123',
   name: 'Alex Johnson',
   username: 'alex_the_financier',
   email: 'alex.johnson@example.com',
   avatarUrl: 'https://placehold.co/128x128.png', // data-ai-hint="user avatar cartoon"
-  joinDate: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString(), // Joined 60 days ago
+  joinDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(), // Joined 2 days ago
   badges: [
-    { id: 'badge1', name: 'Budgeting Pro', iconName: 'Target', color: 'text-green-500', dateEarned: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'badge2', name: 'Quiz Master', iconName: 'ListChecks', color: 'text-blue-500', dateEarned: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'badge3', name: 'Interest Explorer', iconName: 'TrendingUp', color: 'text-red-500', dateEarned: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'badge4', name: 'Streak Keeper', iconName: 'Flame', color: 'text-orange-500', dateEarned: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+    { id: 'badge0', name: 'Welcome!', iconName: 'Sparkles', color: 'text-yellow-500', dateEarned: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
   ],
   activity: [
-    { id: 'act0', type: 'streak_updated', title: '5 Day Streak!', date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), details: 'Keep it up!' },
-    { id: 'act1', type: 'quiz_taken', title: 'Budgeting Basics Quiz', date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(), details: 'Score: 3/3 (100%)' },
-    { id: 'act2', type: 'badge_earned', title: "Earned 'Quiz Master'", date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'act3', type: 'topic_completed', title: 'Student Loans', date: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'act4', type: 'quiz_taken', title: 'Interest Rates Quiz', date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(), details: 'Score: 1/1 (100%)' },
-    { id: 'act5', type: 'badge_earned', title: "Earned 'Interest Explorer'", date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'act6', type: 'topic_completed', title: 'Budgeting Basics', date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString() },
-    { id: 'act7', type: 'account_created', title: 'Joined FinLit Teens', date: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000).toISOString() },
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), // Sort recent first
+    { id: 'act_join', type: 'account_created', title: 'Joined FinLit Teens', date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString() },
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
   progress: {
-    completedTopicIds: ['budgeting', 'student-loans', 'interest-rates'],
-    quizAttempts: [
-      { quizId: 'budgeting', topicTitle: 'Budgeting Basics', score: 3, totalQuestions: 3, dateTaken: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString() },
-      { quizId: 'interest-rates', topicTitle: 'Interest Rates', score: 1, totalQuestions: 1, dateTaken: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString() },
-      { quizId: 'student-loans', topicTitle: 'Student Loans', score: 1, totalQuestions: 2, dateTaken: new Date(Date.now() - 20 * 24 * 60 * 60 * 1000).toISOString() },
-    ].sort((a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime()), // Sort recent first
-    averageQuizScore: ( (3/3 + 1/1 + 1/2) / 3 ) * 100, // Calculated for mock
+    completedTopicIds: [],
+    quizAttempts: [],
+    // averageQuizScore will be calculated by the components, defaulting to 0 if no attempts.
   },
-  currentStreak: 5,
-  longestStreak: 12,
+  currentStreak: 0,
+  longestStreak: 0,
 };
+
+    
