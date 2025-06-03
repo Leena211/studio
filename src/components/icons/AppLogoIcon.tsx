@@ -6,15 +6,14 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
     ? props.strokeWidth 
     : parseFloat(props.strokeWidth || "1.5");
   
-  const symbolStrokeWidth = baseStrokeWidth * 0.8; 
   const coinStrokeWidth = baseStrokeWidth * 0.3;
 
-  // Green for bag, Gold for coins, Dark Green/Brown for symbol
+  // Green for bag, Gold for coins, Dark Green/Brown for symbol/text
   const bagColor = "hsl(130, 45%, 45%)"; // A pleasant green
   const bagStrokeColor = "hsl(130, 45%, 35%)"; // Darker green for outline
   const coinColor = "hsl(45, 100%, 60%)"; // Bright gold
   const coinStrokeColor = "hsl(40, 80%, 50%)"; // Slightly darker gold for coin outline
-  const bookSymbolColor = "hsl(30, 30%, 30%)"; // Dark brown for knowledge symbol
+  const textColor = "hsl(30, 30%, 30%)"; // Dark brown for text
 
   return (
     <svg
@@ -51,35 +50,19 @@ export function AppLogoIcon(props: SVGProps<SVGSVGElement>) {
       <circle cx="16.5" cy="7.5" r="1.6" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
       <circle cx="12.5" cy="5.5" r="1.3" fill={coinColor} stroke={coinStrokeColor} strokeWidth={coinStrokeWidth}/>
 
-      {/* Open Book Symbol */}
-      {/* Spine */}
-      <path 
-        d="M12 12 V 17.5" 
-        fill="none" 
-        stroke={bookSymbolColor} 
-        strokeWidth={symbolStrokeWidth * 0.9} 
-      />
-      {/* Left page outline */}
-      <path 
-        d="M12 12.5 Q9.5 12 9 14 C8.5 16 9.5 17.5 12 17.5" 
-        fill="none" 
-        stroke={bookSymbolColor} 
-        strokeWidth={symbolStrokeWidth * 0.9} 
-      />
-      {/* Right page outline */}
-      <path 
-        d="M12 12.5 Q14.5 12 15 14 C15.5 16 14.5 17.5 12 17.5" 
-        fill="none" 
-        stroke={bookSymbolColor} 
-        strokeWidth={symbolStrokeWidth * 0.9}
-      />
-      {/* Top edge of pages (simplified) */}
-       <path
-        d="M9 14 C9.5 13.5 11 13.2 12 13.2 C13 13.2 14.5 13.5 15 14"
-        fill="none"
-        stroke={bookSymbolColor}
-        strokeWidth={symbolStrokeWidth * 0.7}
-      />
+      {/* "FinLit" Text */}
+      <text
+        x="12" // Center horizontally
+        y="15.5" // Adjust for vertical centering on the bag
+        fill={textColor}
+        fontSize="3.5" // Adjust font size as needed
+        fontFamily="Arial, sans-serif" // Or your preferred font
+        fontWeight="bold"
+        textAnchor="middle" // Horizontally centers the text
+        stroke="none" // No stroke for text for clarity
+      >
+        FinLit
+      </text>
     </svg>
   );
 }
